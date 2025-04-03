@@ -22,7 +22,7 @@ export const requestFCMToken = async () => {
     .then(async (permission) => {
       if (permission === "granted") {
         const token = await getToken(messaging, { vapidKey: vapidKey });
-        await fetch("http://localhost:7878/save-token", {
+        await fetch("https://push-notification-backend-umber.vercel.app/save-token", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
