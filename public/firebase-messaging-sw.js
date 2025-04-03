@@ -26,7 +26,7 @@ messaging.onBackgroundMessage((payload) => {
   const notificationOptions = {
     body: payload.notification.body || "You have a new message.",
     icon: "/avatar.png",
-    badge: "/AdminLTELogo.png",
+    badge: "/user8-128x128.jpg",
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
