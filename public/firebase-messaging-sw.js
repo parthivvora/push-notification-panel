@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 importScripts(
   "https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"
 );
@@ -19,6 +20,14 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log("Message received in to background ", payload);
-  // ...
+  console.log("Background Message received: ", payload);
+
+  const notificationTitle = payload.notification.title || "New Notification";
+  const notificationOptions = {
+    body: payload.notification.body || "You have a new message.",
+    icon: "/avatar.png",
+    badge: "/AdminLTELogo.png",
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });

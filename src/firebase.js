@@ -17,18 +17,32 @@ const vapidKey =
   "BBQcg8zSuRRs3F1lepmccRT0D5b1YVv2v9MocFvmMb2Df16qoQEKcQQBznksQYddeJMPo_VjP2-HI6y8AkJMK-0";
 const messaging = getMessaging(firebaseApp);
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/firebase-messaging-sw.js")
+    .then((registration) => {
+      console.log("✅ Service Worker registered:", registration);
+    })
+    .catch((error) => {
+      console.error("❌ Service Worker registration failed:", error);
+    });
+}
+
 export const requestFCMToken = async () => {
   return Notification.requestPermission()
     .then(async (permission) => {
       if (permission === "granted") {
         const token = await getToken(messaging, { vapidKey: vapidKey });
-        await fetch("https://push-notification-backend-umber.vercel.app/save-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ fcmToken: token }),
-        });
+        await fetch(
+          "https://push-notification-backend-umber.vercel.app/save-token",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ fcmToken: token }),
+          }
+        );
         return token;
       } else {
         throw new Error("Permission denied for notifications");
